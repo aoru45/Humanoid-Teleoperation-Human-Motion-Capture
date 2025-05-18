@@ -1,0 +1,62 @@
+defaults:
+  - env_base
+
+num_envs : 4096
+# num_observations : 88 # v-min2
+# num_privileged_obs : 164 # v-min2
+# num_observations : 624
+# num_observations : 87 # v-teleop
+# num_privileged_obs : 163 # v-teleop
+# num_observations : 84 # v-teleop-clean
+# num_privileged_obs : 160 # v-teleop-clean
+# num_observations : 75 # v-teleop-superclean
+# num_privileged_obs : 151 # v-teleop-superclean
+# num_observations : 65 # v-teleop-clean-nolastaction
+# num_privileged_obs : 141 # v-teleop-clean-nolastaction
+# num_observations : 90 # v-teleop_extend
+# num_privileged_obs : 166 # v-teleop_extend
+# num_observations : 87 # v-teleop_extend_nolinvel
+# num_privileged_obs : 163 # v-teleop_extend_nolinvel
+
+
+# dof_pos, dof_vel, base_vel, base_ang_vel, base_gravity,
+#task_obs,   
+#self.actions
+# 138 = 19 + 19 + 3 + 3 + 3 + 8(num_select_point)*3 * 3 + 19
+# num_observations : 138 # v-teleop-extend-max
+# 162 = 27 + 27 + 3 + 3 + 3 + 8*3 * 3 + 27
+num_observations : 153 # v-teleop-extend-max
+
+#
+#  self.privileged_info = torch.cat([
+#                 self._base_com_bias,
+#                 self._ground_friction_values[:, self.feet_indices],
+#                 self._link_mass_scale,
+#                 self._kp_scale,
+#                 self._kd_scale,
+#                 self._rfi_lim_scale,
+#                 self.contact_forces[:, self.feet_indices, :].reshape(self.num_envs, 6),
+#                 torch.clamp_max(self._recovery_counter.unsqueeze(1), 1),
+#             ], dim=1)
+# 138 + 3 + 2 + 8 + 19 + 19 + 19 + 6 + 1
+# num_privileged_obs : 215 #214 # v-teleop-extend-max
+
+# 162 + 3 + 2 + 8 + 27 + 27 + 27 + 6 + 1
+# 182 = 153 + 3 + 2 + 8 + 21 + 21 + 21 + 6 + 1
+num_privileged_obs : 236 #214 # v-teleop-extend-max
+
+
+
+
+
+# num_observations : 93 # v-teleop-extend-vr-max
+# num_privileged_obs : 170 #214 # v-teleop-extend-vr-max
+
+# num_observations : 135 # v-teleop-extend-max-nolinvel
+# num_privileged_obs : 211 # v-teleop-extend-max-nolinvel
+
+num_actions : 21
+im_eval : False
+
+add_short_history: False
+short_history_length: 5

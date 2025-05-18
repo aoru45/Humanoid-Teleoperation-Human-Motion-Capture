@@ -1,0 +1,188 @@
+hydra:
+  run:
+    dir: output/g1/${exp_name}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params: null
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  env: {}
+  mode: RUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: .hydra
+  overrides:
+    hydra:
+    - hydra.mode=RUN
+    task:
+    - task=g1:teleop
+    - run_name=OmniH2O_TEACHER
+    - env.num_observations=993
+    - env.num_privileged_obs=1076
+    - motion.teleop_obs_version=v-teleop-extend-max-full
+    - motion=motion_full_g1
+    - motion.extend_head=True
+    - motion.extend_hand=True
+    - num_envs=4096
+    - asset.zero_out_far=False
+    - asset.termination_scales.max_ref_motion_distance=1.5
+    - sim_device=cuda:0
+    - motion.motion_file=data/g1/amass_filtered.pkl
+    - rewards=rewards_teleop_omnih2o_teacher_g1
+    - rewards.penalty_curriculum=True
+    - rewards.penalty_scale=0.5
+    - load_run=25_04_27_00-06-29_OmniH2O_TEACHER
+    - resume=True
+    - checkpoint=130500
+  job:
+    name: ${exp_name}
+    chdir: null
+    override_dirname: asset.termination_scales.max_ref_motion_distance=1.5,asset.zero_out_far=False,checkpoint=130500,env.num_observations=993,env.num_privileged_obs=1076,load_run=25_04_27_00-06-29_OmniH2O_TEACHER,motion.extend_hand=True,motion.extend_head=True,motion.motion_file=data/g1/amass_filtered.pkl,motion.teleop_obs_version=v-teleop-extend-max-full,motion=motion_full_g1,num_envs=4096,resume=True,rewards.penalty_curriculum=True,rewards.penalty_scale=0.5,rewards=rewards_teleop_omnih2o_teacher_g1,run_name=OmniH2O_TEACHER,sim_device=cuda:0,task=g1:teleop
+    id: ???
+    num: ???
+    config_name: config_teleop_g1
+    env_set:
+      OMP_NUM_THREADS: '1'
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.3.2
+    version_base: '1.3'
+    cwd: /remote-home/xueaoru/human2humanoid
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: /remote-home/xueaoru/human2humanoid/legged_gym/legged_gym/cfg
+      schema: file
+      provider: main
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: /remote-home/xueaoru/human2humanoid/output/g1/humanoid_smpl
+    choices:
+      viewer: viewer_base
+      terrain: terrain_teleop
+      sim: sim_teleop
+      rewards: rewards_teleop_omnih2o_teacher_g1
+      train: ppo_teleop_g1
+      normalization: normalization_teleop
+      noise: noise_teleop
+      motion: motion_full_g1
+      init_state: init_state_teleop_g1
+      env: env_teleop_g1
+      domain_rand: domain_rand_teleop_g1
+      control: control_teleop_g1
+      commands: commands_teleop
+      asset: asset_teleop_g1
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: default
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false

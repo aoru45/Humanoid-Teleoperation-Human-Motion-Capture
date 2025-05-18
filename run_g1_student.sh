@@ -1,0 +1,29 @@
+# OmniH2O Training and Playing Teacher Policy 
+python -m legged_gym.scripts.train_hydra \
+    --config-name=config_teleop_g1 \
+    task=g1:teleop \
+    run_name=OmniH2O_STUDENT \
+    env.num_observations=1821 \
+    env.num_privileged_obs=1904 \
+    motion=motion_full_g1 \
+    motion.teleop_obs_version=v-teleop-extend-vr-max-nolinvel \
+    motion.teleop_selected_keypoints_names=[] \
+    motion.extend_head=True \
+    motion.extend_hand=True \
+    motion.motion_file=data/g1/amass_filtered.pkl \
+    num_envs=4096 \
+    asset.zero_out_far=False \
+    asset.termination_scales.max_ref_motion_distance=1.5 \
+    sim_device=cuda:0 \
+    rewards=rewards_teleop_omnih2o_teacher_g1 \
+    rewards.penalty_curriculum=True \
+    rewards.penalty_scale=0.5 \
+    train.distill=True \
+    train.policy.init_noise_std=0.001 \
+    env.add_short_history=True \
+    env.short_history_length=25 \
+    noise.add_noise=False \
+    noise.noise_level=0 \
+    train.dagger.load_run_dagger=25_04_27_00-06-29_OmniH2O_TEACHER \
+    train.dagger.checkpoint_dagger=130500 \
+    train.dagger.dagger_only=True
