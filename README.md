@@ -4,6 +4,5 @@ The project is the final project of SI252 for the reinforcement learning course 
 # Plans
 - [X] Proposal & Mocap method
 - [X] Train baseline RL method human2humanoid
-- [ ] Improve the baseline method
 - [ ] Sim2sim simulation
 - [ ] Sim2Real deployment
